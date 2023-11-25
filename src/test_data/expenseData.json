@@ -1,0 +1,9 @@
+[
+    { "category": "Rent", "amount": 1000 },
+    { "category": "Groceries", "amount": 300 },
+    { "category": "Utilities", "amount": 200 },
+    { "category": "Entertainment", "amount": 150 },
+    { "category": "Travel", "amount": 400 },
+    { "category": "Miscellaneous", "amount": 250 }
+  ]
+  

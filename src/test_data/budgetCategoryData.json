@@ -1,0 +1,12 @@
+[
+    { "key": "1", "category": "Housing", "budget": 1200 },
+    { "key": "2", "category": "Food", "budget": 500 },
+    { "key": "3", "category": "Transportation", "budget": 300 },
+    { "key": "4", "category": "Utilities", "budget": 200 },
+    { "key": "5", "category": "Insurance", "budget": 400 },
+    { "key": "6", "category": "Healthcare", "budget": 250 },
+    { "key": "7", "category": "Savings", "budget": 800 },
+    { "key": "8", "category": "Entertainment", "budget": 150 }
+  ]
+
+  

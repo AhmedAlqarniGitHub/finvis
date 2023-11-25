@@ -3,12 +3,15 @@ import { Layout, Menu } from 'antd';
 import IncomeChart from './IncomeChart';
 import ExpenseChart from './ExpenseChart';
 import BudgetCategory from './BudgetCategory';
+import './style.css';
+
+
 
 import incomeData from '../test_data/incomeData.json';
 import expenseData from '../test_data/expenseData.json';
 import budgetCategoryData from '../test_data/budgetCategoryData.json';
 
-const { Header, Content, Footer } = Layout;
+const { Header, Footer } = Layout;
 
 
 
@@ -23,15 +26,13 @@ const Dashboard = () => {
           {/* other menu items */}
         </Menu>
       </Header>
-      <Content style={{ padding: '0 50px' }}>
-        <div className="site-layout-content">
+        <div className="dashboard">
           {/* Content goes here */}
           <IncomeChart data={incomeData} />
           <ExpenseChart data={expenseData} />
           <BudgetCategory data={budgetCategoryData} />
         </div>
-      </Content>
-      <Footer style={{ textAlign: 'center' }}>FinVis ©2023 Created by YourName</Footer>
+      <Footer style={{ textAlign: 'center' }}>FinVis ©2023 Created by ahmed and waleed</Footer>
     </Layout>
   );
 };

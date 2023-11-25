@@ -1,6 +1,8 @@
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import './style.css';
+
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -19,7 +21,7 @@ const ExpenseChart = ({ data }) => {
     }],
   };
 
-  return <Pie data={chartData} />;
+  return <Pie data={chartData} className="expense-chart"/>;
 };
 
 export default ExpenseChart;

@@ -2,19 +2,21 @@ import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import axios from 'axios';
 
 const Login = () => {
     const navigate = useNavigate(); // Hook for navigation
 
     const onFinish = (values) => {
-        console.log('Received values of form: ', values);
-        // Check if the username is 'ahmed' and password is 'test'
-        if (values.username === 'ahmed' && values.password === 'test') {
-            navigate('/dashboard'); // Redirect to the dashboard
-        } else {
-            // Handle login failure (e.g., show an error message)
-            alert('Invalid username or password');
-        }
+        axios.post("http://localhost:8080/login", {
+          username: values.username,
+          password: values.password
+        }).then((response)=>{
+            console.log(response);
+            navigate("/dashboard"); // Redirect to the dashboard
+        }).catch(err=>{
+            console.log(err);
+        });
     };
 
     return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button ,message} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import axios from 'axios';
@@ -7,29 +7,48 @@ import axios from 'axios';
 const Login = () => {
     const navigate = useNavigate(); // Hook for navigation
 
-    const onFinish = (values) => {
-        axios.post("http://localhost:8080/login", {
-          username: values.username,
-          password: values.password
-        }).then((response)=>{
-            console.log(response);
-            navigate("/dashboard"); // Redirect to the dashboard
-        }).catch(err=>{
-            console.log(err);
-        });
-    };
+    
+    const handleLogin = async (values) => {
+        try {
+            const response = await axios.post('http://localhost:8080/login', {
+                username: values.username,
+                password: values.password
+            });
+    
+            // Save token to localStorage and redirect or do something else
+            localStorage.setItem('accessToken', response.data.accessToken);
+            message.success('Login successful');
+            navigate("/dashboard");
+            // Redirect or update state as needed
+    
+        } catch (error) {
+            // Axios encapsulates the response error in error.response
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                message.error(error.response.data.message);
+            } else if (error.request) {
+                // The request was made but no response was received
+                message.error('No response from server');
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                message.error('Error: ' + error.message);
+            }
+        }
+    }
+    
 
     return (
         <div className="login-container">
             <div className="login-form">
                 <div className="login-logo">
-                    <img src="path-to-your-logo.png" alt="logo" />
+                <h2 className="login-header">FINVIS</h2> 
                 </div>
                 <Form
                     name="normal_login"
                     className="login-form"
                     initialValues={{ remember: true }}
-                    onFinish={onFinish}
+                    onFinish={handleLogin}
                 >
                     <Form.Item
                         name="username"

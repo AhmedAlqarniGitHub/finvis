@@ -1,23 +1,49 @@
 import React from 'react';
-import { Form, Input, Button, Select } from 'antd';
+import { Form, Input, Button, Select, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 
 const { Option } = Select;
 
 const Register = () => {
     const navigate = useNavigate();
 
-    const onFinish = (values) => {
-        console.log('Received values of form: ', values);
-        navigate('/login'); // Redirect to login after successful registration
-    };
+    const handleRegister = async (values) => {
+        try {
+            const response = await axios.post('http://localhost:8080/register', {
+                username: values.username,
+                email: values.email,
+                password: values.password,
+                phone: values.phone,
+                age: values.age,
+                incomeSource: values.incomeSource,
+            });
 
+            // Handle post-registration logic
+            message.success('Registration successful');
+            // For example, navigate to the login page or a success page
+            navigate("/login");
+
+        } catch (error) {
+            if (error.response) {
+                // Server responded with a non-2xx status code
+                message.error(error.response.data.message);
+            } else if (error.request) {
+                // The request was made but no response was received
+                message.error('No response from server');
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                message.error('Error: ' + error.message);
+            }
+        }
+    }
     return (
         <div className="register-container">
             <div className="register-form">
                 <Form
                     name="register"
-                    onFinish={onFinish}
+                    onFinish={handleRegister}
                     scrollToFirstError
                 >
                     <Form.Item
@@ -66,14 +92,31 @@ const Register = () => {
 
                     <Form.Item
                         name="phone"
-                        rules={[{ required: true, message: 'Please input your phone number!' }]}
+                        rules={[
+                            { required: true, message: 'Please input your phone number!' },
+                            { pattern: /^[0-9]{10}$/, message: 'Phone number must be 10 digits' } // Adjust the regex as needed
+                        ]}
                     >
                         <Input style={{ width: '100%' }} placeholder="Phone Number" />
                     </Form.Item>
 
                     <Form.Item
                         name="age"
-                        rules={[{ required: true, message: 'Please input your age!' }]}
+                        rules={[
+                            { required: true, message: 'Please input your age!' },
+                            () => ({
+                                validator(_, value) {
+                                    if (!value) {
+                                        return Promise.resolve();
+                                    }
+                                    const age = parseInt(value, 10);
+                                    if (isNaN(age) || age < 1 || age > 150) {
+                                        return Promise.reject(new Error('Age must be a number between 1 and 150'));
+                                    }
+                                    return Promise.resolve();
+                                },
+                            }),
+                        ]}
                     >
                         <Input type="number" placeholder="Age" />
                     </Form.Item>

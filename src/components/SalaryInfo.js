@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
-import { Input, Button, Layout, Typography, Form, Table } from "antd"; // Include Table here
+import { Input, Button, Typography, Form, Table } from "antd";
+import "./style.css"; // Ensure this is the correct path to your style file
 
 // GraphQL Mutation
 const UPDATE_SALARY_INFO = gql`
@@ -23,7 +24,7 @@ const UPDATE_SALARY_INFO = gql`
 `;
 
 // React Component
-const FinancePage = () => {
+const SalaryInfo = () => {
   const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -64,7 +65,6 @@ const FinancePage = () => {
     });
   };
 
-  const { Content } = Layout;
   const { Title } = Typography;
 
   const columns = [
@@ -98,52 +98,47 @@ const FinancePage = () => {
   ];
 
   return (
-    <div className="register-container">
-      {" "}
-      {/* Use the register container class */}
-      <div className="register-form">
-        {" "}
-        {/* Use the register form class */}
-        <Title level={2}>Finance Manager</Title>
-        <Form form={form} layout="vertical">
-          <Form.Item label="Salary">
-            <Input
-              type="number"
-              placeholder="Enter your salary"
-              onChange={(e) =>
-                setSalaryInfo({ ...salaryInfo, salary: e.target.value })
-              }
-            />
-          </Form.Item>
-          <Form.Item label="Salary Day">
-            <Input
-              type="number"
-              placeholder="Enter the day of the month you get paid"
-              onChange={(e) =>
-                setSalaryInfo({ ...salaryInfo, salaryDay: e.target.value })
-              }
-            />
-          </Form.Item>
-        </Form>
+    <div className="salary-info-container">
+      <Title level={2} className="title">
+        Finance Manager
+      </Title>
+      <Form form={form} layout="vertical" className="salary-form">
+        <Form.Item label="Salary">
+          <Input
+            type="number"
+            placeholder="Enter your salary"
+            onChange={(e) =>
+              setSalaryInfo({ ...salaryInfo, salary: e.target.value })
+            }
+          />
+        </Form.Item>
+        <Form.Item label="Salary Day">
+          <Input
+            type="number"
+            placeholder="Enter the day of the month you get paid"
+            onChange={(e) =>
+              setSalaryInfo({ ...salaryInfo, salaryDay: e.target.value })
+            }
+          />
+        </Form.Item>
+        <Form.Item>
         <Table
           dataSource={salaryInfo.obligations}
           columns={columns}
           rowKey={(record, index) => index}
           pagination={false}
+          className="dark-theme-table"
         />
-        <Button onClick={handleAddObligation} style={{ marginTop: "10px" }}>
+        </Form.Item>
+        <Button onClick={handleAddObligation} className="add-obligation-btn">
           Add Obligation
         </Button>
-        <Button
-          onClick={handleSubmit}
-          type="primary"
-          style={{ marginTop: "20px" }}
-        >
+        <Button onClick={handleSubmit} type="primary" className="submit-btn">
           Submit All Updates
         </Button>
-      </div>
+      </Form>
     </div>
   );
 };
 
-export default FinancePage;
+export default SalaryInfo;

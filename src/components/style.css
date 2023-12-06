@@ -1,11 +1,14 @@
 .dashboard {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns */
+    /* display: grid; */
+    grid-template-columns: repeat(3, 1fr); 
     gap: 20px;
     align-items: start;
     padding: 20px;
     width: 100%;
-    margin: 20vh;
+    /* margin: 20vh; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @media (max-width: 768px) {
@@ -14,37 +17,30 @@
     }
 }
 
-/* BudgetCategory.css */
-.budget-category {
-    padding: 10px;
-    background-color: #f3f4f6; /* Light grey background */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 25vw;
-    max-height: 25vh;
-}
-
 /* ExpenseChart.css */
 .expense-chart {
     padding: 10px;
-    background-color: #fdf9f9;
+    background-color: #1A2027; /* Dark background */
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 25vw;
-    max-height: 25vh;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adjusted for darker theme */
+    width: 40vw !important;
+    max-height: 30vh !important;
+    color: white; /* Text color for dark theme */
 }
+
 
 /* IncomeChart.css */
 .income-chart {
-    padding: 20px;
-    margin: 10px;
-    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #1A2027; /* Dark background */
     border-radius: 8px;
-    background-color: #fafafa;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 25vw;
-    max-height: 25vh;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adjusted for darker theme */
+    width: 40vw !important;
+    max-height: 30vh !important;
+    color: white; /* Text color for dark theme */
 }
+
+
 
 .login-container {
     display: flex;
@@ -93,13 +89,22 @@
 }
 
 
-
 .register-container {
     display: flex;
     justify-content: center;
     align-items: center;
+    align-content: center;
     height: 100vh;
     background-color: #f0f2f5;
+}
+
+.general-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    /* height: 100vh;
+    background-color: #f0f2f5; */
 }
 
 .register-form {
@@ -110,3 +115,140 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* style.css */
+.salary-info-container  h2{
+    color: #fff;
+}
+.logo-container {
+    background-color: #1A2027; /* Adjust to your preferred dark color */
+    padding: 10px; /* Or any other padding you prefer */
+    border-radius: 8px; /* Optional, for rounded corners */
+    /* Add other styling as needed */
+}
+
+.ant-layout{
+        background: linear-gradient(278deg, rgb(41, 50, 60) 30%, rgb(0, 21, 41) 90%);
+}
+
+/* General Styles for Dark Theme */
+.dark-theme-table .ant-table,
+.budget-category .ant-table,
+.salary-info-container {
+  background-color: #1A2027; /* Dark background */
+  color: white; /* White text for readability */
+  border-radius: 8px;
+}
+
+.dark-theme-table .ant-table-thead > tr > th,
+.budget-category .ant-table-thead > tr > th {
+  background-color: #121212;
+  color: #ccc;
+
+}
+
+.dark-theme-table .ant-table-tbody > tr > td,
+.budget-category .ant-table-tbody > tr > td {
+  background-color: #1A2027;
+  color: #ccc;
+}
+
+/* Hover styling for table rows */
+.dark-theme-table .ant-table-tbody > tr:hover > td,
+.budget-category .ant-table-tbody > tr:hover > td {
+  background-color: #2a2f35;
+  color: #ccc;
+
+}
+
+/* Table Pagination */
+.budget-category .ant-table-pagination {
+  color: #fff;
+}
+/* Input Field Styling for Dark Theme */
+.salary-form .ant-input,
+.savings-form .ant-input {
+  background-color: #2a2f35; /* Darker background for input */
+  color: #ddd; /* Lighter text color for readability */
+  border: 1px solid #3a3f44; /* Slightly lighter border for some contrast */
+}
+
+/* Placeholder Color */
+.salary-form .ant-input::placeholder,
+.savings-form .ant-input::placeholder {
+  color: #aaa; /* Lighter color for placeholder text */
+}
+
+/* Input Field Focus Styling */
+.salary-form .ant-input:focus,
+.savings-form .ant-input:focus {
+  background-color: #2a2f35;
+  border-color: rgb(97, 218, 251); /* Highlight color when focused */
+  box-shadow: none; /* Optional: removes the default focus shadow */
+}
+
+
+/* Form Item Label Color */
+.salary-form  .ant-form-item-label > label {
+  color: #ccc;
+}
+
+/* Table row and cell styling for dark theme */
+.dark-theme-table .ant-table-thead > tr > th,
+.dark-theme-table .ant-table-tbody > tr > td {
+  background-color: #1A2027; /* Dark background for table rows */
+  color: white; /* White text color for readability */
+}
+
+/* Button Styling */
+.add-obligation-btn, .submit-btn {
+  background-color: rgb(31, 85, 100);
+  border-color: rgb(97, 218, 251);
+  color: white;
+  margin-right: 10px;
+}
+
+/* Salary Info Container */
+.salary-info-container {
+  padding: 20px;
+  max-width: 100%;
+  margin: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+
+.salary-info-container .title {
+  text-align: center;
+}
+
+/* Budget Category Styling */
+.budget-category {
+  padding: 10px;
+  max-width: 100%;
+  height: auto;
+}
+
+
+/* Title Styles */
+.title, .current-savings-title, .total-savings-title {
+  color: white; /* White text for dark theme */
+}
+
+/* Progress Bar Styles */
+.savings-progress .ant-progress-inner {
+  background-color: #2a2f35; /* Dark background for progress bar */
+}
+
+.savings-progress .ant-progress-bg {
+  background-color: rgb(97, 218, 251); /* Progress bar color */
+}
+
+/* Button Styles */
+.submit-btn {
+  background-color: rgb(97, 218, 251);
+  border-color: rgb(97, 218, 251);
+  color: white;
+  margin-top: 20px;
+}
+

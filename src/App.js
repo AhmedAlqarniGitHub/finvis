@@ -3,15 +3,16 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Navigate,
 } from "react-router-dom";
+import { Layout, Menu } from "antd";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import Dashboard from "./components/Dashboard";
-import FinancePage from "./components/finantial_data";
+import SalaryInfo from "./components/SalaryInfo";
 import Login from "./components/login";
 import Register from "./components/register";
 import "./App.css";
-import SavingsTargetPage from "./components/savingTargets";
+import SavingsTarget from "./components/SavingsTarget";
+import Home from "./components/home";
 
 // Set up Apollo Client
 const client = new ApolloClient({
@@ -25,16 +26,12 @@ document.cookie = "userId=ahmed; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT";
 function App() {
   return (
     <ApolloProvider client={client}>
-      {" "}
       {/* Wrap your app with ApolloProvider */}
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/fin" element={<FinancePage />} />
-          <Route path="/saving_target" element={<SavingsTargetPage />} />
-          <Route path="/" element={<Navigate replace to="/login" />} />
+          <Route path="/" element={<Home />} />
         </Routes>
       </Router>
     </ApolloProvider>

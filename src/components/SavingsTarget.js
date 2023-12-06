@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
-import { Input, Button, Card, Typography, Form, Progress } from "antd";
+import { Input, Button, Typography, Form, Progress } from "antd";
+import "./style.css"; // Ensure this is the correct path to your style file
 
 // GraphQL Queries and Mutations
 const GET_USER_SAVINGS = gql`
@@ -26,7 +27,7 @@ const UPDATE_SAVINGS_GOAL = gql`
 `;
 
 // React Component
-const SavingsTargetPage = () => {
+const SavingsTarget = () => {
   const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -71,40 +72,42 @@ const SavingsTargetPage = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div className="register-container">
-      {" "}
-      {/* Use the same container class as the register page */}
-      <div className="register-form">
-        {" "}
-        {/* Use the same form class as the register page */}
-        <Title level={2}>Savings Goal Tracker</Title>
-        <Form layout="vertical">
-          {/* ... Form fields ... */}
-          <Form.Item label="Savings Goal">
-            <Input
-              type="number"
-              placeholder="Enter your savings goal"
-              onChange={(e) => setSavingsGoal(e.target.value)}
-            />
-          </Form.Item>
-          <Button
-            onClick={handleSubmit}
-            type="primary"
-            style={{ marginTop: "20px" }}
-          >
-            Update Savings Goal
-          </Button>
-        </Form>
-        <Title level={4} style={{ marginTop: "40px" }}>
+    <div className="salary-info-container">
+      <Title level={2} className="title">
+        Savings Goal Tracker
+      </Title>
+      <Form layout="vertical" className="salary-form">
+        <Form.Item label="Savings Goal">
+          <Input
+            type="number"
+            placeholder="Enter your savings goal"
+            onChange={(e) => setSavingsGoal(e.target.value)}
+          />
+        </Form.Item>
+        <Button onClick={handleSubmit} type="primary" className="submit-btn">
+          Update Savings Goal
+        </Button>
+        <Title
+          level={4}
+          className="current-savings-title"
+          style={{ marginTop: "40px" }}
+        >
           Current Savings Progress
         </Title>
-        <Progress percent={isNaN(progressPercent) ? 0 : progressPercent} />
-        <Title level={4} style={{ marginTop: "20px" }}>
+        <Progress
+          percent={isNaN(progressPercent) ? 0 : progressPercent}
+          className="savings-progress"
+        />
+        <Title
+          level={4}
+          className="total-savings-title"
+          style={{ marginTop: "20px" }}
+        >
           Total Savings: ${currentSavings.toFixed(2)}
         </Title>
-      </div>
+      </Form>
     </div>
   );
 };
 
-export default SavingsTargetPage;
+export default SavingsTarget;

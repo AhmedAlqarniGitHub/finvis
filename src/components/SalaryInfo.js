@@ -5,14 +5,14 @@ import { Input, Button, Typography, Form, Table } from "antd";
 import "./style.css"; // Ensure this is the correct path to your style file
 
 // GraphQL Mutation
-const UPDATE_SALARY_INFO = gql`
-  mutation UpdateSalaryInfo(
+const UPDATE_USER = gql`
+  mutation UpdateUser(
     $userId: ID!
-    $salary: Float!
-    $salaryDay: Int!
-    $obligations: [ObligationInput!]!
+    $salary: Float
+    $salaryDay: Int
+    $obligations: [ObligationInput]
   ) {
-    updateSalaryInfo(
+    updateUser(
       userId: $userId
       salary: $salary
       salaryDay: $salaryDay
@@ -25,28 +25,24 @@ const UPDATE_SALARY_INFO = gql`
 
 // React Component
 const SalaryInfo = () => {
-  const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-  };
+  const userId = window.localStorage.getItem('userId');
 
   const [form] = Form.useForm();
   const [salaryInfo, setSalaryInfo] = useState({
-    userId: getCookie("userId"),
+    userId: userId,
     salary: 0,
     salaryDay: 0,
-    obligations: [{ name: "", cost: 0 }],
+    obligations: [{ name: "", amount: 0 }], // Changed 'amount' to 'amount'
   });
 
-  const [updateSalaryInfo] = useMutation(UPDATE_SALARY_INFO);
+  const [updateUser] = useMutation(UPDATE_USER);
 
   const handleSubmit = () => {
-    updateSalaryInfo({
+    updateUser({
       variables: {
         userId: salaryInfo.userId,
         salary: parseFloat(salaryInfo.salary),
-        salaryDay: parseInt(salaryInfo.salaryDay, 10),
+        salaryDay: parseFloat(salaryInfo.salaryDay), 
         obligations: salaryInfo.obligations,
       },
     });
@@ -61,7 +57,7 @@ const SalaryInfo = () => {
   const handleAddObligation = () => {
     setSalaryInfo({
       ...salaryInfo,
-      obligations: [...salaryInfo.obligations, { name: "", cost: 0 }],
+      obligations: [...salaryInfo.obligations, { name: "", amount: 0 }],
     });
   };
 
@@ -83,14 +79,14 @@ const SalaryInfo = () => {
     },
     {
       title: "Cost",
-      dataIndex: "cost",
-      key: "cost",
+      dataIndex: "amount",
+      key: "amount",
       render: (_, record, index) => (
         <Input
           type="number"
-          value={record.cost}
+          value={record.amount}
           onChange={(e) =>
-            handleObligationChange(index, "cost", parseFloat(e.target.value))
+            handleObligationChange(index, "amount", parseFloat(e.target.value))
           }
         />
       ),

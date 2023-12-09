@@ -14,11 +14,11 @@ const Login = () => {
                 username: values.username,
                 password: values.password
             });
-    
             // Save token to localStorage and redirect or do something else
             localStorage.setItem('accessToken', response.data.accessToken);
+            localStorage.setItem('userId',response.data.userid)
             message.success('Login successful');
-            navigate("/dashboard");
+            navigate("/");
             // Redirect or update state as needed
     
         } catch (error) {

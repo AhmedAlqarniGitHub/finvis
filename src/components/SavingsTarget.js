@@ -1,75 +1,103 @@
 import React, { useState, useEffect } from "react";
-import { useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import gql from "graphql-tag";
-import { Input, Button, Typography, Form, Progress } from "antd";
-import "./style.css"; // Ensure this is the correct path to your style file
+import { Input, Button, Typography, Form, Progress, message } from "antd";
+import "./style.css";
 
-// GraphQL Queries and Mutations
+// GraphQL Query to Get User Savings Target
 const GET_USER_SAVINGS = gql`
   query GetUserSavings($userId: ID!) {
-    user(id: $userId) {
-      monthlySavings {
-        month
-        amount
-      }
-      totalSavings
-    }
-  }
-`;
-
-const UPDATE_SAVINGS_GOAL = gql`
-  mutation UpdateSavingsGoal($userId: ID!, $savingsGoal: Float!) {
-    updateSavingsGoal(userId: $userId, savingsGoal: $savingsGoal) {
+    savingsTarget(userId: $userId) {
       id
-      savingsGoal
+      user
+      targetAmount
+      currentAmount
     }
   }
 `;
 
-// React Component
+// GraphQL Mutation to Add or Update Savings Target
+const UPDATE_SAVINGS_GOAL = gql`
+  mutation UpdateSavingsGoal($userId: ID!, $targetAmount: Float!) {
+    addSavingsTarget(userId: $userId, targetAmount: $targetAmount) {
+      id
+      user
+      targetAmount
+      currentAmount
+    }
+  }
+`;
+
+// GraphQL Query to Get Total Savings
+const GET_TOTAL_SAVINGS = gql`
+  query GetTotalSavings($userId: ID!) {
+    totalSavings(userId: $userId)
+  }
+`;
+
 const SavingsTarget = () => {
-  const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-  };
+  const userId = window.localStorage.getItem('userId');
 
-  const userId = getCookie("userId");
+  // Initialize states
   const [savingsGoal, setSavingsGoal] = useState(0);
-  const [currentSavings, setCurrentSavings] = useState(0); // Initialize currentSavings state
+  const [currentSavings, setCurrentSavings] = useState(0);
+  const [totalSavings, setTotalSavings] = useState(null); // Initialize to null
 
-  const { data, loading, error } = { data: "test", loading: false, error: "" };
-  /*useQuery(GET_USER_SAVINGS, {
+  const { data: savingsData, loading: savingsLoading, error: savingsError } = useQuery(GET_USER_SAVINGS, {
     variables: { userId },
     skip: !userId,
-  });*/
+  });
 
-  const [updateSavingsGoal] = useMutation(UPDATE_SAVINGS_GOAL);
+  const { data: totalSavingsData, loading: totalSavingsLoading } = useQuery(GET_TOTAL_SAVINGS, {
+    variables: { userId },
+    skip: !userId,
+  });
+
+  const [updateSavingsGoal] = useMutation(UPDATE_SAVINGS_GOAL, {
+    refetchQueries: [{ query: GET_USER_SAVINGS, variables: { userId } }],
+  });
 
   useEffect(() => {
-    if (data && data.user) {
-      // Assuming totalSavings is the cumulative savings from previous months
-      setCurrentSavings(data.user.totalSavings);
+    console.log("Savings Data:", savingsData); // Debugging log
+    console.log("Total Savings Data:", totalSavingsData); // Debugging log
+    if (savingsData && savingsData.savingsTarget) {
+      setSavingsGoal(savingsData.savingsTarget.targetAmount);
+      console.log("ggggg:: "+ (savingsData.savingsTarget.targetAmount)/(totalSavingsData.totalSavings)*100)
+      setCurrentSavings((totalSavingsData.totalSavingst)/(savingsData.savingsTarget.targetAmount)*100);
+    } else {
+      setSavingsGoal(0);
+      setCurrentSavings(0);
     }
-  }, [data]);
+
+    if (totalSavingsData && totalSavingsData.totalSavings !== undefined) {
+      setTotalSavings(totalSavingsData.totalSavings);
+    }
+  }, [savingsData, totalSavingsData]);
 
   const handleSubmit = () => {
     updateSavingsGoal({
       variables: {
         userId: userId,
-        savingsGoal: parseFloat(savingsGoal),
+        targetAmount: parseFloat(savingsGoal),
       },
     });
   };
 
-  // ... Other state and functions ...
-
   const { Title } = Typography;
 
-  const progressPercent = (currentSavings / savingsGoal) * 100;
+  let progressPercent = 0;
+  if (totalSavings > 0) {
+   progressPercent = currentSavings;
+  } else if (totalSavings === 0 && savingsGoal > 0) {
+    message.warning("Total savings is zero. Please review your financial data.");
+  }
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (totalSavings === null || totalSavings === undefined) {
+    return <p>Loading total savings...</p>;
+  }
+
+  if (savingsLoading || totalSavingsLoading) return <p>Loading...</p>;
+  if (savingsError) return <p>Error: {savingsError.message}</p>;
 
   return (
     <div className="salary-info-container">
@@ -81,6 +109,7 @@ const SavingsTarget = () => {
           <Input
             type="number"
             placeholder="Enter your savings goal"
+            value={savingsGoal}
             onChange={(e) => setSavingsGoal(e.target.value)}
           />
         </Form.Item>
@@ -103,7 +132,7 @@ const SavingsTarget = () => {
           className="total-savings-title"
           style={{ marginTop: "20px" }}
         >
-          Total Savings: ${currentSavings.toFixed(2)}
+          Total Savings: ${totalSavings.toFixed(2)}
         </Title>
       </Form>
     </div>

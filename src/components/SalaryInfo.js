@@ -1,8 +1,22 @@
-import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
+import React, { useState, useEffect } from "react";
+import { useQuery, useMutation } from "@apollo/client";
 import gql from "graphql-tag";
-import { Input, Button, Typography, Form, Table } from "antd";
-import "./style.css"; // Ensure this is the correct path to your style file
+import { Input, Button, Typography, Form, Table, message } from "antd";
+import "./style.css";
+
+// GraphQL Query to Get User Info
+const GET_USER_INFO = gql`
+  query GetUserInfo($userId: ID!) {
+    user(id: $userId) {
+      salary
+      salaryDay
+      obligations {
+        name
+        amount
+      }
+    }
+  }
+`;
 
 // GraphQL Mutation
 const UPDATE_USER = gql`
@@ -25,25 +39,57 @@ const UPDATE_USER = gql`
 
 // React Component
 const SalaryInfo = () => {
-  const userId = window.localStorage.getItem('userId');
+ const userId = window.localStorage.getItem('userId');
 
   const [form] = Form.useForm();
   const [salaryInfo, setSalaryInfo] = useState({
     userId: userId,
-    salary: 0,
-    salaryDay: 0,
-    obligations: [{ name: "", amount: 0 }], // Changed 'amount' to 'amount'
+    salary: '',
+    salaryDay: '',
+    obligations: [{ name: "", amount: 0 }],
   });
+
+  const { data, loading, error } = useQuery(GET_USER_INFO, {
+    variables: { userId },
+    skip: !userId,
+    fetchPolicy: 'network-only', // Ensures fresh data is fetched
+  });
+
+  useEffect(() => {
+    if (loading) {
+      // Optionally handle loading state
+      return;
+    }
+  
+    if (error) {
+      message.error('An error occurred while fetching data.');
+      return;
+    }
+  console.log(data.user.obligations)
+    if (data && data.user) {
+      setSalaryInfo(prevState => ({
+        ...prevState,
+        salary: data.user.salary || '',
+        salaryDay: data.user.salaryDay || '',
+        obligations: data.user.obligations.length > 0 ? data.user.obligations : [{ name: "", amount: 0 }],
+      }));
+    } else {
+      message.info('Please enter your salary information.');
+    }
+  }, [data, loading, error]);
+
 
   const [updateUser] = useMutation(UPDATE_USER);
 
   const handleSubmit = () => {
+    const cleanedObligations = salaryInfo.obligations.map(({ name, amount }) => ({ name, amount }));
+  
     updateUser({
       variables: {
         userId: salaryInfo.userId,
         salary: parseFloat(salaryInfo.salary),
-        salaryDay: parseFloat(salaryInfo.salaryDay), 
-        obligations: salaryInfo.obligations,
+        salaryDay: parseInt(salaryInfo.salaryDay, 10),
+        obligations: cleanedObligations,
       },
     });
   };
@@ -78,7 +124,7 @@ const SalaryInfo = () => {
       ),
     },
     {
-      title: "Cost",
+      title: "Amount",
       dataIndex: "amount",
       key: "amount",
       render: (_, record, index) => (
@@ -103,6 +149,7 @@ const SalaryInfo = () => {
           <Input
             type="number"
             placeholder="Enter your salary"
+            value={salaryInfo.salary}
             onChange={(e) =>
               setSalaryInfo({ ...salaryInfo, salary: e.target.value })
             }
@@ -112,19 +159,20 @@ const SalaryInfo = () => {
           <Input
             type="number"
             placeholder="Enter the day of the month you get paid"
+            value={salaryInfo.salaryDay}
             onChange={(e) =>
               setSalaryInfo({ ...salaryInfo, salaryDay: e.target.value })
             }
           />
         </Form.Item>
         <Form.Item>
-        <Table
-          dataSource={salaryInfo.obligations}
-          columns={columns}
-          rowKey={(record, index) => index}
-          pagination={false}
-          className="dark-theme-table"
-        />
+          <Table
+            dataSource={salaryInfo.obligations}
+            columns={columns}
+            rowKey={(record, index) => index}
+            pagination={false}
+            className="dark-theme-table"
+          />
         </Form.Item>
         <Button onClick={handleAddObligation} className="add-obligation-btn">
           Add Obligation

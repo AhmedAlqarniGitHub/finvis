@@ -13,7 +13,7 @@ import ProtectedRoute from './components/isAuth'
 
 // Set up Apollo Client
 const client = new ApolloClient({
-  uri: "https://graphql-server-image-g6zsmcwacq-ey.a.run.app/graphql", // make sure this is the correct URI for your GraphQL server
+  uri: "https://finvisgateway-do3f1fd7.nw.gateway.dev/graphql", // make sure this is the correct URI for your GraphQL server
   cache: new InMemoryCache(),
 });
 

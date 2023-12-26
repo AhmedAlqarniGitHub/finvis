@@ -12,7 +12,7 @@ const Register = () => {
     const handleRegister = async (values) => {
         try {
             const response = await axios.post(
-              "https://europe-west3-finvis-406219.cloudfunctions.net/register",
+              "https://finvisgateway-do3f1fd7.nw.gateway.dev/register",
               {
                 username: values.username,
                 email: values.email,

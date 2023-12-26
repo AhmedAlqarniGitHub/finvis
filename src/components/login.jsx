@@ -11,7 +11,7 @@ const Login = () => {
     const handleLogin = async (values) => {
         try {
             const response = await axios.post(
-              "https://europe-west3-finvis-406219.cloudfunctions.net/login",
+              "https://finvisgateway-do3f1fd7.nw.gateway.dev/login",
               {
                 username: values.username,
                 password: values.password,

@@ -7,6 +7,8 @@ import BudgetCategory from './BudgetCategory';
 import { message } from 'antd';
 import gql from 'graphql-tag';
 
+
+
 const GET_INCOME_DATA = gql`
   query GetIncomeData($userId: ID!) {
     transactions(userId: $userId, transactionType: "income") {
@@ -43,8 +45,6 @@ const GET_BUDGET_CATEGORY_DATA = gql`
   }
 `;
 
-
-
 // Create a dark theme instance
 const darkTheme = createTheme({
   palette: {
@@ -53,23 +53,27 @@ const darkTheme = createTheme({
 });
 
 const Dashboard = () => {
+// Retrieve the userId from a suitable source (e.g., context, local storage)
+  const userId = localStorage.getItem('userId'); // Replace with actual logic to get user ID
+
   const {
     data: incomeData,
     loading: loadingIncome,
     error: errorIncome
-  } = useQuery(GET_INCOME_DATA);
+  } = useQuery(GET_INCOME_DATA, { variables: { userId } });
 
   const {
     data: expenseData,
     loading: loadingExpense,
     error: errorExpense
-  } = useQuery(GET_EXPENSE_DATA);
+  } = useQuery(GET_EXPENSE_DATA, { variables: { userId } });
 
   const {
     data: budgetCategoryData,
     loading: loadingBudgetCategory,
     error: errorBudgetCategory
-  } = useQuery(GET_BUDGET_CATEGORY_DATA);
+  } = useQuery(GET_BUDGET_CATEGORY_DATA, { variables: { userId } });
+
 
   if (loadingIncome || loadingExpense || loadingBudgetCategory) {
     return <div>Loading...</div>;

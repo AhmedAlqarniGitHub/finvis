@@ -6,6 +6,11 @@ import "./style.css";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const ExpenseChart = ({ data }) => {
+
+    if (!Array.isArray(data)) {
+    return <div>No expense data available</div>;
+  }
+  
   const chartData = {
     labels: data.map((item) => item.category),
     datasets: [

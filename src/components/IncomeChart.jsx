@@ -21,6 +21,11 @@ ChartJS.register(
 );
 
 const IncomeChart = ({ data }) => {
+
+    if (!Array.isArray(data)) {
+    return <div>No expense data available</div>;
+  }
+  
   const chartData = {
     labels: data.map((item) => item.label),
     datasets: [

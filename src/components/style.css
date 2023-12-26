@@ -262,3 +262,18 @@
 .logout-container h1 {
   margin-bottom: 20px;
 }
+/* Add this to your style.css */
+.savings-progress-container {
+  position: relative;
+  margin-bottom: 20px; /* Adjust as needed */
+}
+
+.savings-progress-percentage {
+  position: absolute;
+  bottom: -20px; /* Adjust as needed */
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 16px; /* Adjust as needed */
+  color: #a9a2a2; /* Adjust color as needed */
+}

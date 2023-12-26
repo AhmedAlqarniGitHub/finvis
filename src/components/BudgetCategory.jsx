@@ -3,6 +3,11 @@ import { Table } from "antd";
 import "./style.css";
 
 const BudgetCategory = ({ data }) => {
+
+    if (!Array.isArray(data)) {
+    return <div>No expense data available</div>;
+  }
+
   const columns = [
     {
       title: "Category",

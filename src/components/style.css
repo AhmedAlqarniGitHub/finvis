@@ -252,3 +252,13 @@
   margin-top: 20px;
 }
 
+/* Add this to your style.css or a relevant CSS file */
+.logout-container {
+  text-align: center;
+  color: white;
+  padding: 20px;
+}
+
+.logout-container h1 {
+  margin-bottom: 20px;
+}

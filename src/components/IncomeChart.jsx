@@ -22,8 +22,8 @@ ChartJS.register(
 
 const IncomeChart = ({ data }) => {
 
-    if (!Array.isArray(data)) {
-    return <div>No expense data available</div>;
+  if (!data || data.length === 0) {
+    return <div>No income data available</div>;
   }
   
   const chartData = {

@@ -55,7 +55,7 @@ const darkTheme = createTheme({
 const Dashboard = () => {
 // Retrieve the userId from a suitable source (e.g., context, local storage)
   const userId = localStorage.getItem('userId'); // Replace with actual logic to get user ID
-
+  console.log("userId: ", userId); // "userId:  60f7b1b0e6b3a60015f1b0d1
   const {
     data: incomeData,
     loading: loadingIncome,
@@ -89,15 +89,15 @@ const Dashboard = () => {
       <div className="dashboard">
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <BudgetCategory data={budgetCategoryData?.budgetCategoryData} />
+            <BudgetCategory data={budgetCategoryData?.user?.obligations} />
           </Grid>
           <Grid item xs={12} md={6}>
             <Grid container direction="column" spacing={3}>
               <Grid item>
-                <ExpenseChart data={expenseData?.expenseData} />
+                <ExpenseChart data={expenseData?.transactions} />
               </Grid>
               <Grid item>
-                <IncomeChart data={incomeData?.incomeData} />
+                <IncomeChart data={incomeData?.transactions} />
               </Grid>
             </Grid>
           </Grid>

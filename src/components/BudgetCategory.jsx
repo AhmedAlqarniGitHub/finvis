@@ -3,33 +3,37 @@ import { Table } from "antd";
 import "./style.css";
 
 const BudgetCategory = ({ data }) => {
-
-    if (!Array.isArray(data)) {
-    return <div>No expense data available</div>;
+  if (!data || data.length === 0) {
+    return <div>No budget data available</div>;
   }
 
   const columns = [
     {
       title: "Category",
-      dataIndex: "category",
-      key: "category",
+      dataIndex: "name",
+      key: "name",
     },
     {
       title: "Budget",
-      dataIndex: "budget",
-      key: "budget",
+      dataIndex: "amount",
+      key: "amount",
     },
-    // You can add more columns as needed
+    // Add more columns as needed
   ];
+
+  const transformedData = data.map((item, index) => ({
+    key: index,
+    name: item.name,
+    amount: item.amount,
+  }));
 
   return (
     <Table
-      dataSource={data}
+      dataSource={transformedData}
       columns={columns}
       className="budget-category"
       pagination={false}
     />
   );
 };
-
 export default BudgetCategory;

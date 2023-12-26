@@ -11,14 +11,17 @@ const Register = () => {
 
     const handleRegister = async (values) => {
         try {
-            const response = await axios.post('http://localhost:8080/register', {
+            const response = await axios.post(
+              "https://europe-west3-finvis-406219.cloudfunctions.net/register",
+              {
                 username: values.username,
                 email: values.email,
                 password: values.password,
                 phone: values.phone,
                 age: values.age,
                 incomeSource: values.incomeSource,
-            });
+              }
+            );
 
             // Handle post-registration logic
             message.success('Registration successful');

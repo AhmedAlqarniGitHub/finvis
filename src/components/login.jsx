@@ -10,10 +10,13 @@ const Login = () => {
     
     const handleLogin = async (values) => {
         try {
-            const response = await axios.post('http://localhost:8080/login', {
+            const response = await axios.post(
+              "https://europe-west3-finvis-406219.cloudfunctions.net/login",
+              {
                 username: values.username,
-                password: values.password
-            });
+                password: values.password,
+              }
+            );
             // Save token to localStorage and redirect or do something else
             localStorage.setItem('accessToken', response.data.accessToken);
             localStorage.setItem('userId',response.data.userid)

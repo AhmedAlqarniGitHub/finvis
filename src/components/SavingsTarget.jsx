@@ -70,8 +70,9 @@ const SavingsTarget = () => {
       setSavingsGoal(targetAmount);
 
       if (totalSavingsData?.totalSavings !== undefined) {
-        setTotalSavings(totalSavingsData.totalSavings);
-        const progress = (totalSavingsData.totalSavings / targetAmount) * 100;
+        const currentAmount = savingsData.savingsTarget.currentAmount;
+        setTotalSavings(currentAmount);
+        const progress = (currentAmount / targetAmount) * 100;
         setCurrentSavings(parseFloat(progress.toFixed(2)));
       }
     } else {

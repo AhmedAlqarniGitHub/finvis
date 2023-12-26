@@ -1,13 +1,11 @@
-import React from 'react';
-import { useQuery } from '@apollo/client';
-import { Grid, ThemeProvider, createTheme } from '@mui/material';
-import IncomeChart from './IncomeChart';
-import ExpenseChart from './ExpenseChart';
-import BudgetCategory from './BudgetCategory';
-import { message } from 'antd';
-import gql from 'graphql-tag';
-
-
+import React from "react";
+import { useQuery } from "@apollo/client";
+import { Grid, ThemeProvider, createTheme } from "@mui/material";
+import IncomeChart from "./IncomeChart";
+import ExpenseChart from "./ExpenseChart";
+import BudgetCategory from "./BudgetCategory";
+import { message } from "antd";
+import gql from "graphql-tag";
 
 const GET_INCOME_DATA = gql`
   query GetIncomeData($userId: ID!) {
@@ -48,39 +46,46 @@ const GET_BUDGET_CATEGORY_DATA = gql`
 // Create a dark theme instance
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
   },
 });
 
 const Dashboard = () => {
-// Retrieve the userId from a suitable source (e.g., context, local storage)
-  const userId = localStorage.getItem('userId'); // Replace with actual logic to get user ID
-  console.log("userId: ", userId); // "userId:  60f7b1b0e6b3a60015f1b0d1
+  // Retrieve the userId from a suitable source (e.g., context, local storage)
+  const userId = localStorage.getItem("userId"); // Replace with actual logic to get user ID
   const {
     data: incomeData,
     loading: loadingIncome,
-    error: errorIncome
-  } = useQuery(GET_INCOME_DATA, { variables: { userId } });
+    error: errorIncome,
+  } = useQuery(GET_INCOME_DATA, {
+    variables: { userId },
+    fetchPolicy: "network-only",
+  });
 
   const {
     data: expenseData,
     loading: loadingExpense,
-    error: errorExpense
-  } = useQuery(GET_EXPENSE_DATA, { variables: { userId } });
+    error: errorExpense,
+  } = useQuery(GET_EXPENSE_DATA, {
+    variables: { userId },
+    fetchPolicy: "network-only",
+  });
 
   const {
     data: budgetCategoryData,
     loading: loadingBudgetCategory,
-    error: errorBudgetCategory
-  } = useQuery(GET_BUDGET_CATEGORY_DATA, { variables: { userId } });
-
+    error: errorBudgetCategory,
+  } = useQuery(GET_BUDGET_CATEGORY_DATA, {
+    variables: { userId },
+    fetchPolicy: "network-only",
+  });
 
   if (loadingIncome || loadingExpense || loadingBudgetCategory) {
     return <div>Loading...</div>;
   }
 
   if (errorIncome || errorExpense || errorBudgetCategory) {
-    message.error('Error loading data!');
+    message.error("Error loading data!");
     return <div>Error loading data!</div>;
   }
 

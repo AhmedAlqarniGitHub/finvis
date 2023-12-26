@@ -65,7 +65,6 @@ const SalaryInfo = () => {
       message.error('An error occurred while fetching data.');
       return;
     }
-  console.log(data.user.obligations)
     if (data && data.user) {
       setSalaryInfo(prevState => ({
         ...prevState,

@@ -17,6 +17,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+
 document.cookie = "userId=ahmed; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT";
 
 

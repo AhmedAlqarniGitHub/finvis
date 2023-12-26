@@ -6,6 +6,7 @@ import "./style.css";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const ExpenseChart = ({ data }) => {
+
   if (!data || data.length === 0) {
     return <div>No expense data available</div>;
   }

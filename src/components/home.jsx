@@ -7,8 +7,6 @@ import SalaryInfo from "./SalaryInfo";
 import Logout from "./Logout";
 import SavingsTarget from "./SavingsTarget";
 import AddTransaction from "./AddTransaction";
-// const AddTransaction = () => <div>Add New Transaction Component</div>;
-// const Logout = () => <div>Logout Component</div>;
 const { Header, Content, Sider, Footer } = Layout;
 
 const Home = () => {
